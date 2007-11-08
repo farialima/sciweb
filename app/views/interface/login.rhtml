@@ -1,0 +1,25 @@
+<div id="home-left">
+  <%= render :partial => "sobre" %>
+</div>
+
+<div id="home-right">
+  <div id="whatsnext">
+    <div class="title">Faça o login</div>
+    <div class="container">
+      <% form_for :user, :url => { :action => "login" } do |form| %>
+        <b>
+          Username:<br/>
+          <%= form.text_field :username, :size => 20 %><br/>
+          <br/>
+          Password:<br/>
+          <%= form.password_field :password, :size => 20 %><br/>
+          <br/>
+          <%= submit_tag "Entrar" %>
+        </b>
+      <% end %>
+    </div>
+  </div>
+  <div id="whatsnext">
+    <div class="title"><%= link_to "Cadastre-se", :action => "add_user"  %></div>
+  </div>
+</div>

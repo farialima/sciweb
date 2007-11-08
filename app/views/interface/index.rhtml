@@ -9,6 +9,7 @@
       <b><%= link_to_remote "Sobre", :url => {:action => :muda_secao, :secao => "sobre" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
       <b><%= link_to_remote "Enviar código", :url => {:action => :muda_secao, :secao => "enviar_codigo" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
       <b><%= link_to_remote "Exemplos", :url => {:action => :muda_secao, :secao => "exemplos" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
+      <b><%= link_to "Logout", :action => "logout" %></b>
     </div>
   </div>
 </div>

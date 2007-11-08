@@ -1,0 +1,36 @@
+<div id="home-left">
+  <div class="para">
+    <h3>Recursos para usuários</h3>
+    <p>
+      Cadastrando-se no SciWeb você pode:
+      <ul>
+        <li>Salvar códigos</li>
+        <li>Salvar bibliotecas de funções</li>
+        <li>Gerar gráficos dos dados calculados</li>
+      </ul>
+    </p>
+  </div>
+</div>
+
+<div id="home-right">
+  <div id="whatsnext">
+    <div class="title"><%= link_to_function "Cadastre-se", "new Effect.toggle('cadastro_form', 'slide')" %></div>
+    <div class="container">
+      <%= error_messages_for 'user' %>
+      <% form_for :user, :url => { :action => "add_user" } do |form| %>
+        <b>
+          Nome completo:<br/>
+          <%= form.text_field :nomecompleto, :size => 20 %><br/>
+          <br/>
+          Username:<br/>
+          <%= form.text_field :username, :size => 20 %><br/>
+          <br/>
+          Password:<br/>
+          <%= form.password_field :password, :size => 20 %><br/>
+          <br/>
+          <%= submit_tag "Enviar" %>
+        </b>
+      <% end %>
+    </div>
+  </div>
+</div>

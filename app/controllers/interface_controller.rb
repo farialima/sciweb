@@ -1,6 +1,10 @@
 class InterfaceController < ApplicationController
+  
+  layout "interface"
+  before_filter :authorize, :except => [ :login, :add_user, :logout ]
 
   def index
+    @user = User.find(session[:user_id])
   end
   
   def processa
@@ -25,4 +29,38 @@ class InterfaceController < ApplicationController
       end
     end
   end
+  
+  ### metodos para adicionar usuario, login e logout
+  def login
+    session[:user_id] = nil
+    if request.post?
+      user = User.authenticate(params[:user][:username], params[:user][:password])
+      if user
+        session[:user_id] = user.id
+        redirect_to :action => "index"
+      else
+        flash[:notice] = "Nome de usuário/senha inválidos"
+      end
+    else
+      @user = User.new
+    end
+  end
+  
+  def logout
+    session[:user_id] = nil
+    flash[:notice] = "Logout efetuado com sucesso"
+    redirect_to(:action => "login" )
+  end
+  
+  def add_user
+    @user = User.new(params[:user])
+    if request.post? and @user.save
+      flash[:notice] = "Usuário #{@user.username} criado. Você já pode fazer o login."
+      @user = User.new
+      redirect_to :action => "login"
+    end
+    
+  end
+  ### FIM
+  
 end
