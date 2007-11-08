@@ -1,0 +1,18 @@
+<div id="enviar_codigo"><div>
+    <div class="para">
+      <h3>Enviar código</h3>
+      <p>
+        Digite sua rotina do Scilab abaixo para ser enviada para o servidor.
+        Utilize uma função de plotagem para receber o retorno.
+      </p>
+      
+      <div id="codigo_form">
+        <% form_remote_tag(:url => { :action => "processa" },
+          :before => "$('loader').show();",
+          :complete => "$('loader').hide();" )  do %>
+          <%= text_area :textarea, :codigo, :cols =>55, :rows => 20 %><br/>
+          <%= submit_tag "Enviar" %>
+        <% end %>
+      </div>
+    </div>
+</div></div>

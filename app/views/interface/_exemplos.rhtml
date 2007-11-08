@@ -1,0 +1,123 @@
+<div id="exemplos"><div>
+    <div class="para">
+      <h3>Exemplos</h3>
+      <p>
+        A rotina abaixo foi desenvolvida para calcular a amplitude de um 
+        campo magnético de uma linha finita em uma determinada região. 
+        Clique em enviar para executar o código e aguarde até que o 
+        gráfico tenha sido criado.
+      </p>
+      
+      <div id="codigo_form">
+        <% form_remote_tag(:url => { :action => "processa" },
+          :before => "$('loader').show();",
+          :complete => "$('loader').hide();" )  do %>
+          <%= text_area :textarea, :codigo, :cols =>55, :rows => 20, :value => "
+function [a, b, c] = prod_vet(ax, ay, az, bx, by, bz)
+
+a = (ay*bz) - (az*by);
+b = (az*bx) - (ax*bz);
+c = (ax*by) - (ay*bx);
+
+endfunction
+
+function [result] = Integral(a, b, I, comp_vet, P1x, P1y, P0x, P0y)
+
+//Definindo a função
+function y = f(z), y = I*comp_vet/((4 * %pi) * (( (P1x - P0x)^2 + (P1y - P0y)^2)^1.5 + 0.01) ), endfunction;
+
+//Passo para cálculo da integral
+h = 0.1;
+
+//Definindo o número de iterações do laço
+n = (b - a)/h;
+
+//Variável de resultado da integral
+resultado = 0;
+
+//Iniciaizando os valores para inicio do cálculo da integral
+a_linha = a;
+b_linha = a + h;
+
+//Calculando a integral através do método de simpsom
+for i=1:n
+   resultado = resultado + ((b_linha - a_linha)/6) * (f(a_linha) + 4*f((((a_linha + b_linha)/2))) + f(b_linha));
+   a_linha = a_linha + h;
+   b_linha = b_linha + h;
+   end
+
+//Jogando para a saída
+result = resultado;
+
+endfunction
+
+//Programa que calcula a intensidade do campo magnético para um filamento de corrente na direção az
+
+//Passo
+h = 0.1;
+
+//Comprimento do eixo x, que será simétrico à 0
+comp_x = 4;
+
+//Comprimento do eixo y, que será simétrico à 0
+comp_y = 4;
+
+//Número de pontos no eixo x
+nx = comp_x/h + 1;
+
+//Número de pontos no eixo y
+ny = comp_y/h + 1;
+
+//Eixo x
+x = -comp_x/2:h:comp_x/2;
+
+//Eixo y
+y = -comp_y/2:h:comp_y/2;
+
+//Corrente em Amperes 
+I = 10;
+
+//Comprimento do fio
+d = 6;
+
+//Posição do filamento de corrente
+P0x = 0;
+P0y = 0;
+
+//Definindo as matrizes que terão o campo magnético em cada direção 
+componenteax = zeros(nx, ny);
+componenteay = zeros(nx, ny);
+
+//Definindo a matriz que conterá o resultado da intensidade do campo magnético
+resultado = zeros(nx, ny);
+
+//Calculando a intensidade do campo magnético
+for i = 1:nx
+   for j = 1:ny
+      
+      //Caso o raio seja zero, não calcular
+      if ((x(i) - P0x)==0 & (y(j) - P0y)==0 )
+        continue;
+      end;
+      //Realizando o produto vetorial
+      [a, b, c] = prod_vet(P0x, P0y, 1, x(i), y(j), 0);
+      componenteax(i, j) = componenteax(i, j) + Integral(-d/2, d/2, I, a, x(i), y(j), P0x, P0y);
+      componenteay(i, j) = componenteay(i, j) + Integral(-d/2, d/2, I, b, x(i), y(j), P0x, P0y);
+      
+      end
+   end
+   
+for i = 1:nx
+   for j = 1:ny
+   
+       resultado(i, j) = (3/10) * ( (componenteax(i, j)^2) + (componenteay(i, j)^2) )^0.5;
+      
+      end
+   end
+
+plot3d (x, y, resultado);" %><br/>
+          <%= submit_tag "Enviar" %>
+        <% end %>
+      </div>
+    </div>
+</div></div>

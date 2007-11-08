@@ -1,0 +1,17 @@
+<div id="home-left">
+  <%= render :partial => "sobre" %>
+</div>
+
+<div id="home-right">
+  <div id="whatsnext">
+    <div class="title">Navegação</div>
+    <div class="container">
+      <b><%= link_to_remote "Sobre", :url => {:action => :muda_secao, :secao => "sobre" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
+      <b><%= link_to_remote "Enviar código", :url => {:action => :muda_secao, :secao => "enviar_codigo" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
+      <b><%= link_to_remote "Exemplos", :url => {:action => :muda_secao, :secao => "exemplos" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
+    </div>
+  </div>
+</div>
+<!--
+<a style="display: none;" id="foto" href="images/arquivo.gif" rel="lightbox" title="Gráfico gerado pelo Scilab">Gráfico gerado pelo Scilab</a>
+-->
