@@ -1,0 +1,38 @@
+= Brazilian Rails
+
+== Intalação
+
+ script/plugin install svn://rubyforge.org/var/svn/brazilian-rails
+
+Para usar a pluralização em português (Inflector) basta adicionar a linha abaixo no seu enviroment.rb
+
+ require 'inflector_portuguese'
+
+== Desenvolvedores
+
+* {Marcos Cóssio Tapajós Martins do Couto}[http://www.improveit.com.br/tapajos]
+* {Celestino Ferreira Gomes}[http://www.workingwithrails.com/person/8470-celestino-gomes]
+* André Luiz Kupkovski
+* Rafael Fraga Walter
+* Fernando João Manfroi
+* Luciene Souza Luna
+* {Vinicius Manhaes Teles}[http://www.improveit.com.br/vinicius]
+
+== Exemplos.
+
+* Time
+* Date
+* Dinheiro. OBS: Para saber como utilizar a classe Dinheiro em um modelo da sua aplicação, verifique o arquivo {README}[link:files/vendor/plugins/brazilian-rails/samples/dinheiro/README.html] no diretório samples/dinheiro.
+* Extenso
+* ActiveRecord::Errors
+* ActionView::Helpers::ActiveRecordHelper
+* ActionView::Helpers::DateHelper
+* Inflector
+* NilClass
+* ActiveSupport::CoreExtensions::String::Conversions
+
+
+== Configuração dos Feriados
+Os feriados são configurados através de arquivos YML que deverão estar na pasta feriados dentro da pasta config da sua aplicação.
+Você pode ver exemplos desses YML dentro do diretório samples/feriado.
+

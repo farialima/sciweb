@@ -59,7 +59,6 @@ class InterfaceController < ApplicationController
       @user = User.new
       redirect_to :action => "login"
     end
-    
   end
   ### FIM
   
