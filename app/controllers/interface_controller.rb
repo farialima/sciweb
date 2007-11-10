@@ -7,6 +7,22 @@ class InterfaceController < ApplicationController
     @user = User.find(session[:user_id])
   end
   
+  def add_program
+    @program = Program.new
+  end
+  
+  def save_program
+    @program = Program.new(params[:program])
+    @program.user_id = session[:user_id]
+    if request.post? and @program.save
+      flash[:notice] = "Programa gravado com sucesso."
+      redirect_to :action => "index"
+    else
+      flash[:notice] = "Problemas ao gravar o programa... Tente novamente."
+      render :action => "add_program"
+    end
+  end
+  
   def processa
     @codigo = params[:textarea][:codigo]
     @identificador = rand(1000)

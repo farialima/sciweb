@@ -1,0 +1,21 @@
+<div id="home-left">
+  <div id="para">
+    <h3>Adicionar programa</h3>
+    <p><%= error_messages_for :program %></p>
+    <p>
+      <% form_for :program, :url => { :action => "save_program" } do |form|  %>
+        Nome do programa (utilize um nome curto):<br/>
+        <%= form.text_field :nome %><br/>
+        Descrição do programa:<br/>
+        <%= form.text_field :descricao %><br/>
+        Digite aqui a definição do parametros do seu programa. Eles servirão para construir uma interface gráfica para que os dados variáveis indicados possam ser modificados no próprio navegador:<br/>
+        <%= form.text_area :parametros %><br/>
+        Digite aqui o código do seu programa na linguagem do Scilab:<br/>
+        <%= form.text_area :codigo %><br/>
+        <%= submit_tag "Enviar" %>
+      <% end  %>
+    </p>
+  </div>
+</div>
+
+<%= render :partial => "sidebar_logged" %>

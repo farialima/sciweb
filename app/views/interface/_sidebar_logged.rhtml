@@ -1,0 +1,28 @@
+<div id="home-right">
+  <div id="whatsnext">
+    <div class="title">Navegação</div>
+    <div class="container">
+      <b><%= link_to_remote "Sobre", :url => {:action => :muda_secao, :secao => "sobre" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
+      <b><%= link_to_remote "Enviar código", :url => {:action => :muda_secao, :secao => "enviar_codigo" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
+      <b><%= link_to_remote "Exemplos", :url => {:action => :muda_secao, :secao => "exemplos" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
+      <b><%= link_to "Adicionar programa", :action => "add_program"  %></b>
+      <b><%= link_to "Logout", :action => "logout" %></b>
+    </div>
+    <div id="whatsnext">
+      <div class="title">Programas</div>
+      <div class="container">
+        <% for program in User.find(session[:user_id]).programs %>
+          <b><%= link_to program.nome, :action => "exec_program", :id => program.id  %></b>
+        <% end %>
+        </div>
+      </div>
+      <div id="whatsnext">
+        <div class="title">Bibliotecas</div>
+        <div class="container">
+          <% for program in User.find(session[:user_id]).programs %>
+          <b><%= program.nome %></b>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>

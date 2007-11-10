@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   attr_accessor :password_confirmation
   validates_confirmation_of :password
   
+  has_many :programs
+  
   def validate
     errors.add_to_base("Campos de senha não podem estar em branco.") if hashed_password.blank?
   end
