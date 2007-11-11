@@ -10,18 +10,34 @@
       <b><%= link_to "Logout", :action => "logout" %></b>
     </div>
     <div id="whatsnext">
-      <div class="title">Programas</div>
+      <div class="title">Meus Programas</div>
       <div class="container">
-        <% for program in Program.find( :all, :conditions => ["user_id = ?", session[:user_id] ], :order => "updated_at DESC" ) %>
+        <% for program in my_programs %>
           <b><%= link_to program.nome, :action => "exec_program", :id => program.id  %></b>
         <% end %>
       </div>
     </div>
     <div id="whatsnext">
-      <div class="title">Bibliotecas</div>
+      <div class="title">Minhas Bibliotecas</div>
       <div class="container">
-        <% for lib in Lib.find( :all, :conditions => ["user_id = ?", session[:user_id] ], :order => "updated_at DESC" ) %>
+        <% for lib in my_libs %>
           <b><%= link_to lib.nome, :action => "edit_lib", :id => lib.id  %></b>
+        <% end %>
+      </div>
+    </div>
+    <div id="whatsnext">
+      <div class="title">Programas Públicos</div>
+      <div class="container">
+        <% for program in public_programs %>
+          <b><%= link_to program.nome, :action => "exec_program", :id => program  %></b>
+        <% end %>
+      </div>
+    </div>
+    <div id="whatsnext">
+      <div class="title">Bibliotecas Públicas</div>
+      <div class="container">
+        <% for lib in public_libs %>
+          <b><%= link_to lib.nome, :action => "view_lib", :id => lib.id  %></b>
         <% end %>
       </div>
     </div>

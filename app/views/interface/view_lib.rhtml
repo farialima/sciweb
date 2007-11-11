@@ -1,0 +1,17 @@
+<div id="home-left">
+  <div id="para">
+    <h3><%= h @lib.nome %></h3>
+    <p>
+      <p>Descrição: <%= h @lib.descricao %></p>
+      <p>Autor: <%= h @lib.user.nomecompleto %></p>
+      <p><%= link_to_function "Ver o código da biblioteca", visual_effect(:toggle_blind, :codigo) %></p>
+      <div id="codigo" style="display: none;">
+        <div>
+          <%= @lib.codigo.gsub(/\r\n/,"<br/>")  %>
+        </div>
+      </div>
+    </p>
+  </div>
+</div>
+
+<%= render :partial => "sidebar_logged" %>

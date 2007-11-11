@@ -44,10 +44,12 @@ class InterfaceController < ApplicationController
   
   def edit_program
     @program = Program.find(params[:id])
+    redirect_to :action => "index" if session[:user_id] != @program.user.id
   end
   
   def update_program
     @program = Program.find(params[:id])
+    redirect_to :action => "index"; return if session[:user_id] != @program.user.id
     if @program.update_attributes(params[:program])
       flash[:notice] = 'O programa foi atualizado com sucesso.'
       redirect_to :action => "exec_program", :id => @program.id
@@ -57,6 +59,7 @@ class InterfaceController < ApplicationController
   end
   
   def destroy_program
+    redirect_to :action => "index"; return if session[:user_id] != Program.find(params[:id]).user.id
     Program.find(params[:id]).destroy
     flash[:notice] = "O programa foi removido com sucesso."
     redirect_to :action => "index" 
@@ -78,8 +81,13 @@ class InterfaceController < ApplicationController
     end
   end
   
+  def view_lib
+    @lib = Lib.find(params[:id])
+  end
+  
   def edit_lib
     @lib = Lib.find(params[:id])
+    redirect_to :action => "index" if session[:user_id] != @lib.user.id
   end
   
   def update_lib
@@ -93,6 +101,7 @@ class InterfaceController < ApplicationController
   end
   
   def destroy_lib
+    redirect_to :action => "index"; return if session[:user_id] != Lib.find(params[:id]).user.id
     Lib.find(params[:id]).destroy
     flash[:notice] = "A biblioteca foi removida com sucesso."
     redirect_to :action => "index" 
