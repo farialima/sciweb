@@ -1,7 +1,31 @@
 <div id="home-left">
   <div id="para">
-    <h3></h3>
+    <h3><%= h @program.nome %></h3>
     <p>
+      <p>Descrição: <%= h @program.descricao %></p>
+      <br/>
+        <p>Opções:
+          <ul>
+            <li><%= link_to "Editar programa", :action => "edit_program", :id => @program.id %></li>
+            <li><%= link_to "Deletar programa", { :action => "destroy_program", :id => @program }, :confirm => "Tem certeza?", :method => :post %></li>
+          </ul>
+        </p>
+        <% form_remote_tag( :url => { :action => "process_program" },
+          :before => "$('loader').show()",
+          :complete => "$('loader').hide()" ) do %>
+          <%= hidden_field_tag "program_id", @program.id %>
+          <% for key in @parametros.keys %>
+          Variável <%= key %>:<br/>
+          <%= text_field_tag "parametros[#{key}]", "#{@parametros[key]}"  %><br/>
+        <% end %>
+        <%= submit_tag "Executar" %>
+      <% end %>
+    </p>
+    <p>
+      <div id="div_grafico_gerado" style="display: none">
+        <div id="conteiner">
+        </div>
+      </div>
     </p>
   </div>
 </div>

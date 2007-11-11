@@ -5,6 +5,7 @@ class CreateLibs < ActiveRecord::Migration
       t.column :nome, :string, :limit => 20
       t.column :descricao, :string, :limit => 50
       t.column :codigo, :text
+      t.column :publico, :boolean, :default => true
       t.column :created_at, :timestamp
       t.column :updated_at, :timestamp
     end

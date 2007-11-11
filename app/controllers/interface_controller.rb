@@ -1,5 +1,7 @@
 class InterfaceController < ApplicationController
   
+  require "yaml"
+  
   layout "interface"
   before_filter :authorize, :except => [ :login, :add_user, :logout ]
 
@@ -21,6 +23,43 @@ class InterfaceController < ApplicationController
       flash[:notice] = "Problemas ao gravar o programa... Tente novamente."
       render :action => "add_program"
     end
+  end
+  
+  def exec_program
+    @program = Program.find(params[:id])
+    @parametros = YAML.load( @program.parametros.gsub(/\r/,"\n") )
+  end
+  
+  def process_program
+    @program = Program.find(params[:program_id])
+    @program.adiciona_parametros params[:parametros]
+    @identificador = @program.nome + rand(1000).to_s
+    @nome_arquivo = "public/images/#{@identificador}.gif"
+    ScilabInterface.new(@program.codigo, @nome_arquivo).exec
+    render :update do |page|
+      page.replace_html :conteiner, :partial => "grafico_gerado"
+      page.delay(1) { page.visual_effect :toggle_blind, :div_grafico_gerado }
+    end
+  end
+  
+  def edit_program
+    @program = Program.find(params[:id])
+  end
+  
+  def update_program
+    @program = Program.find(params[:id])
+    if @program.update_attributes(params[:program])
+      flash[:notice] = 'O programa foi atualizado com sucesso.'
+      redirect_to :action => "exec_program", :id => @program.id
+    else
+      render :action => 'edit_program'
+    end
+  end
+  
+  def destroy_program
+    Program.find(params[:id]).destroy
+    flash[:notice] = "O programa foi removido com sucesso."
+    redirect_to :action => "index" 
   end
   
   def processa
@@ -65,7 +104,7 @@ class InterfaceController < ApplicationController
   def logout
     session[:user_id] = nil
     flash[:notice] = "Logout efetuado com sucesso"
-    redirect_to(:action => "login" )
+    redirect_to :action => "login"
   end
   
   def add_user

@@ -6,6 +6,7 @@ class CreatePrograms < ActiveRecord::Migration
       t.column :descricao, :string, :limit => 50
       t.column :codigo, :text
       t.column :parametros, :text
+      t.column :publico, :boolean, :default => true
       t.column :created_at, :timestamp
       t.column :updated_at, :timestamp
     end

@@ -2,7 +2,7 @@
   <div id="whatsnext">
     <div class="title">Navegação</div>
     <div class="container">
-      <b><%= link_to_remote "Sobre", :url => {:action => :muda_secao, :secao => "sobre" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
+      <b><%= link_to "Sobre", :action => :index %></b>
       <b><%= link_to_remote "Enviar código", :url => {:action => :muda_secao, :secao => "enviar_codigo" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
       <b><%= link_to_remote "Exemplos", :url => {:action => :muda_secao, :secao => "exemplos" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
       <b><%= link_to "Adicionar programa", :action => "add_program"  %></b>

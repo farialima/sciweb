@@ -3,17 +3,17 @@
     <h3>Adicionar programa</h3>
     <p><%= error_messages_for :program %></p>
     <p>
-      <% form_for :program, :url => { :action => "save_program" } do |form|  %>
-        Nome do programa (utilize um nome curto, sem espaços):<br/>
+      <% form_for :program, :url => { :action => "update_program", :id => @program.id } do |form|  %>
+        Nome do programa (utilize um nome curto):<br/>
         <%= form.text_field :nome %><br/>
         Descrição do programa:<br/>
         <%= form.text_field :descricao %><br/>
         Este programa é público? <%= form.check_box :publico %><br/><br/>
         Digite aqui a definição do parametros do seu programa. Eles servirão para construir uma interface gráfica para que os dados variáveis indicados possam ser modificados no próprio navegador:<br/>
         <%= form.text_area :parametros %><br/>
-        Digite aqui o código do seu programa na linguagem do Scilab (não esqueça dos caracteres de ponto e vírgula  no final das linhas):<br/>
+        Digite aqui o código do seu programa na linguagem do Scilab:<br/>
         <%= form.text_area :codigo %><br/>
-        <%= submit_tag "Enviar" %>
+        <%= submit_tag "Salvar" %>
       <% end  %>
     </p>
   </div>
