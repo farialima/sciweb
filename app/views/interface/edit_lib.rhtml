@@ -1,0 +1,21 @@
+<div id="home-left">
+  <div id="para">
+    <h3>Editar biblioteca</h3>
+    <p><%= error_messages_for :lib %></p>
+    <p>
+      <% form_for :lib, :url => { :action => "update_lib", :id => @lib } do |form|  %>
+        Nome da biblioteca (utilize um nome curto):<br/>
+        <%= form.text_field :nome %><br/>
+        Descrição da biblioteca:<br/>
+        <%= form.text_field :descricao %><br/>
+        Esta biblioteca é pública? <%= form.check_box :publico %><br/><br/>
+        Digite aqui o código da sua biblioteca na linguagem do Scilab:<br/>
+        <%= form.text_area :codigo %><br/>
+        <%= submit_tag "Salvar" %>
+      <% end  %>
+    </p>
+    <p><%= link_to "Deletar biblioteca", { :action => "destroy_lib", :id => @lib }, :confirm => "Tem certeza?", :method => :post %></p>
+  </div>
+</div>
+
+<%= render :partial => "sidebar_logged" %>

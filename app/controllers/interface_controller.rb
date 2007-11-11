@@ -62,6 +62,42 @@ class InterfaceController < ApplicationController
     redirect_to :action => "index" 
   end
   
+  def add_lib
+    @lib = Lib.new
+  end
+  
+  def save_lib
+    @lib = Lib.new(params[:lib])
+    @lib.user_id = session[:user_id]
+    if request.post? and @lib.save
+      flash[:notice] = "Biblioteca gravada com sucesso."
+      redirect_to :action => "index"
+    else
+      flash[:notice] = "Problemas ao gravar a biblioteca... Tente novamente."
+      render :action => "add_lib"
+    end
+  end
+  
+  def edit_lib
+    @lib = Lib.find(params[:id])
+  end
+  
+  def update_lib
+    @lib = Lib.find(params[:id])
+    if @lib.update_attributes(params[:lib])
+      flash[:notice] = 'A biblioteca foi atualizada com sucesso.'
+      redirect_to :action => "index"
+    else
+      render :action => 'edit_lib'
+    end
+  end
+  
+  def destroy_lib
+    Lib.find(params[:id]).destroy
+    flash[:notice] = "A biblioteca foi removida com sucesso."
+    redirect_to :action => "index" 
+  end
+  
   def processa
     @codigo = params[:textarea][:codigo]
     @identificador = rand(1000)

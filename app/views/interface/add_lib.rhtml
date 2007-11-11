@@ -1,0 +1,26 @@
+<div id="home-left">
+  <div id="para">
+    <h3>Adicionar biblioteca</h3>
+    <p><%= error_messages_for :lib %></p>
+    <p>
+      <% form_for :lib, :url => { :action => "save_lib" } do |form|  %>
+        Nome da biblioteca (utilize um nome curto, sem espaços):<br/>
+        <%= form.text_field :nome %><br/>
+        Descrição do programa:<br/>
+        <%= form.text_field :descricao %><br/>
+        Esta biblioteca é pública? <%= form.check_box :publico %><br/><br/>
+        Digite aqui o código da sua biblioteca/função na linguagem do Scilab (não esqueça dos caracteres de ponto e vírgula  no final das linhas):<br/>
+        <%= form.text_area :codigo, :value => "
+function [soma, produto] = nome_funcao(paramX, paramY)
+
+soma = paramX + paramY;
+produto = paramX * paramY;
+
+endfunction" %><br/>
+        <%= submit_tag "Enviar" %>
+      <% end  %>
+    </p>
+  </div>
+</div>
+
+<%= render :partial => "sidebar_logged" %>
