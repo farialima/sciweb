@@ -5,6 +5,7 @@ class Program < ActiveRecord::Base
   validates_presence_of :parametros
   
   belongs_to :user
+  has_and_belongs_to_many :libs
   
   def adiciona_parametros(parametros_adicionais)
     codigo_original = self.codigo

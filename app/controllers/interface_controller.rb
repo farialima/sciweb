@@ -11,11 +11,15 @@ class InterfaceController < ApplicationController
   
   def add_program
     @program = Program.new
+    @libs = Lib.new
   end
   
   def save_program
     @program = Program.new(params[:program])
     @program.user_id = session[:user_id]
+    if params[:lib].length  > 0
+      params[:lib].each { |i| @program.libs << Lib.find(i) }
+    end
     if request.post? and @program.save
       flash[:notice] = "Programa gravado com sucesso."
       redirect_to :action => "index"
@@ -31,14 +35,15 @@ class InterfaceController < ApplicationController
   end
   
   def process_program
-    @program = Program.find(params[:program_id])
+    @program = Program.find(params[:id])
     @program.adiciona_parametros params[:parametros]
     @identificador = @program.nome + rand(1000).to_s
     @nome_arquivo = "public/images/#{@identificador}.gif"
-    ScilabInterface.new(@program.codigo, @nome_arquivo).exec
+    retorno = ScilabInterface.new(@program, @nome_arquivo).exec
     render :update do |page|
       page.replace_html :conteiner, :partial => "grafico_gerado"
       page.delay(1) { page.visual_effect :toggle_blind, :div_grafico_gerado }
+      #page.alert(retorno)
     end
   end
   
@@ -49,7 +54,14 @@ class InterfaceController < ApplicationController
   
   def update_program
     @program = Program.find(params[:id])
-    redirect_to :action => "index"; return if session[:user_id] != @program.user.id
+    @program.libs.delete_all
+    if !(params[:lib].nil?)
+      if params[:lib].length  > 0
+        params[:lib].each { |i| @program.libs << Lib.find(i) }
+      end
+    end
+    # a linha abaixo eh para protecao. precisa ser reformulada
+    #redirect_to :action => "index"; return if session[:user_id] != @program.user.id
     if @program.update_attributes(params[:program])
       flash[:notice] = 'O programa foi atualizado com sucesso.'
       redirect_to :action => "exec_program", :id => @program.id

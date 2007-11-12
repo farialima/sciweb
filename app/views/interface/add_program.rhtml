@@ -13,6 +13,17 @@
         <%= form.text_area :parametros %><br/>
         Digite aqui o código do seu programa na linguagem do Scilab (não esqueça dos caracteres de ponto e vírgula  no final das linhas):<br/>
         <%= form.text_area :codigo %><br/>
+        Marque as bibliotecas que deseja incluir durante a execução do programa:<br/>
+        <br/>
+        Minhas bibliotecas:<br/>
+        <% for lib in my_libs %>
+          <%= check_box_tag("lib[]", lib.id)  %><%= lib.nome %><br/>
+        <% end %>
+        <br/>
+        Bibliotecas Públicas:<br/>
+        <% for lib in public_libs %>
+          <%= check_box_tag("lib[]", lib.id)  %><%= lib.nome %><br/>
+        <% end %>
         <%= submit_tag "Enviar" %>
       <% end  %>
     </p>

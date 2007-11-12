@@ -12,13 +12,12 @@
           </ul>
         </p>
       <% end %>
-      <% form_remote_tag( :url => { :action => "process_program" },
+      <% form_remote_tag( :url => { :action => "process_program", :id => @program },
         :before => "$('loader').show()",
         :complete => "$('loader').hide()" ) do %>
-        <%= hidden_field_tag "program_id", @program.id %>
         <% for key in @parametros.keys %>
           Variável <%= key %>:<br/>
-          <%= text_field_tag "parametros[#{key}]", "#{@parametros[key]}"  %><br/>
+          <%= text_field_tag "parametros[#{key}]", "#{@parametros[key]}" %><br/>
         <% end %>
         <%= submit_tag "Executar" %>
       <% end %>

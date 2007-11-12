@@ -1,6 +1,6 @@
 class ScilabInterface
-  def initialize(codigo, grafico)
-    @codigo = codigo
+  def initialize(program, grafico)
+    @program = program
     @grafico = grafico
   end
   def exec
@@ -8,10 +8,13 @@ class ScilabInterface
     comando << "export DISPLAY=:3\n"
     comando << "scilab -nw << EOF\n"
     comando << "scf(0);\n"
-    comando << @codigo+"\n"
+    if @program.libs.count > 0
+      @program.libs.each { |i| comando << i.codigo.gsub(/\r/, "") + "\n" }
+    end
+    comando << @program.codigo.gsub(/\r/, "") + "\n"
     comando << "xs2gif(0,'#{@grafico}');\n"
     comando << "exit;\n"
     comando << "EOF\n"
-    `#{comando}`.chomp
+    `#{comando}`
   end
 end
