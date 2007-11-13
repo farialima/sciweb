@@ -10,7 +10,14 @@ class Program < ActiveRecord::Base
   def adiciona_parametros(parametros_adicionais)
     codigo_original = self.codigo
     self.codigo = ""
-    parametros_adicionais.each { |key, value| self.codigo << "#{key} = #{value};\n" }
+    parametros_adicionais.each do |key, value|
+      if value.class != Array
+        self.codigo << "#{key} = #{value};\n"  
+      else
+        self.codigo << "#{key} = zeros(#{value.length}, 1);\n"
+        value.each_with_index { |item, index| codigo << "#{key}(#{index+1}) = #{item};\n" }
+      end
+    end
     self.codigo << codigo_original
   end
 end

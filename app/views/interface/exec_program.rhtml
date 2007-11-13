@@ -16,8 +16,15 @@
         :before => "$('loader').show()",
         :complete => "$('loader').hide()" ) do %>
         <% for key in @parametros.keys %>
-          Variável <%= key %>:<br/>
-          <%= text_field_tag "parametros[#{key}]", "#{@parametros[key]}" %><br/>
+          <% if @parametros[key].class != Array %>
+            Variável <%= key %>:<br/>
+            <%= text_field_tag "parametros[#{key}]", "#{@parametros[key]}" %><br/>
+          <% else  %>
+            <% @parametros[key].each_with_index do |item, index| %>
+              Valor do elemento <%= key %>(<%= index+1 %>):<br/>
+              <%= text_field_tag "parametros[#{key}][]", @parametros[key][index] %><br/>
+            <% end %>
+          <% end %>
         <% end %>
         <%= submit_tag "Executar" %>
       <% end %>

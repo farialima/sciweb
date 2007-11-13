@@ -17,8 +17,10 @@ class InterfaceController < ApplicationController
   def save_program
     @program = Program.new(params[:program])
     @program.user_id = session[:user_id]
-    if params[:lib].length  > 0
-      params[:lib].each { |i| @program.libs << Lib.find(i) }
+    if !(params[:lib].nil?)
+      if params[:lib].length  > 0
+        params[:lib].each { |i| @program.libs << Lib.find(i) }
+      end
     end
     if request.post? and @program.save
       flash[:notice] = "Programa gravado com sucesso."
@@ -37,13 +39,15 @@ class InterfaceController < ApplicationController
   def process_program
     @program = Program.find(params[:id])
     @program.adiciona_parametros params[:parametros]
+    #render :inline => "<%= debug @program %>"
+    #return
     @identificador = @program.nome + rand(1000).to_s
     @nome_arquivo = "public/images/#{@identificador}.gif"
     retorno = ScilabInterface.new(@program, @nome_arquivo).exec
     render :update do |page|
       page.replace_html :conteiner, :partial => "grafico_gerado"
       page.delay(1) { page.visual_effect :toggle_blind, :div_grafico_gerado }
-      #page.alert(retorno)
+      page.alert(retorno)
     end
   end
   
@@ -71,7 +75,10 @@ class InterfaceController < ApplicationController
   end
   
   def destroy_program
-    redirect_to :action => "index"; return if session[:user_id] != Program.find(params[:id]).user.id
+    if session[:user_id] != Program.find(params[:id]).user.id
+      redirect_to :action => "index"
+      return
+    end
     Program.find(params[:id]).destroy
     flash[:notice] = "O programa foi removido com sucesso."
     redirect_to :action => "index" 
