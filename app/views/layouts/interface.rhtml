@@ -1,46 +1,45 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
-<head>
-  <title>SciWeb</title>
-  <%= javascript_include_tag :defaults %>
-  <%= javascript_include_tag "lightbox.js" %>
-  <%= javascript_include_tag "libs.js" %>
-  <%= stylesheet_link_tag "style", :media => "all" %>
-  <%= stylesheet_link_tag "lightbox", :media => "all" %>
-</head>
-<body id="interface">
-<%= image_tag 'loader.gif', :id=>'loader', :style=>"display:none; float:right;" %>
-<center>
-  <div id="cont-top"></div>
-  <div id="cont-mid">
-    <div id="cont-content">
-      <div id="header"></div>
-    </div> 
-    <div id="content">
-      <% if flash[:notice] -%>
-      <div id="notice" ><%= flash[:notice] %></div>
-    <% end -%>
-    <%= yield :layout %>
-    </div>
-  </div>
-  <div class="clear"></div>
-  <div id="cont-footer">
-    <!-- quando mostro essa div, fica uma parte lateral inferior sem borda
+  <head>
+    <title>SciWeb</title>
+    <%= javascript_include_tag :defaults %>
+    <%= javascript_include_tag "lightbox.js" %>
+    <%= javascript_include_tag "libs.js" %>
+    <%= stylesheet_link_tag "style", :media => "all" %>
+    <%= stylesheet_link_tag "lightbox", :media => "all" %>
+  </head>
+  <body id="interface">
+    <%= image_tag 'loader.gif', :id=>'loader', :style=>"display:none; float:right;" %>
+    <center>
+      <div id="cont-top"></div>
+      <div id="cont-mid">
+        <div id="cont-content">
+          <div id="header"></div>
+        </div> 
+        <div id="content">
+          <% if flash[:notice] -%>
+            <div id="notice" ><%= flash[:notice] %></div>
+          <% end -%>
+          <%= yield :layout %>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <div id="cont-footer">
+        <!-- quando mostro essa div, fica uma parte lateral inferior sem borda
     <div id="copy">
       <a href="#">Documentação</a> -
       <a href="#">Termos e Condições</a>
       <br/><br/>
       O Sciweb foi feito inteiramente com Software Livre/Código Aberto, assim como o próprio.
     </div>-->
-  </div>  
-  </div>
-  <div id="cont-bot"></div>  
-</center>
-<div id="grafico">
-  <a style="display: none;" id="foto" href="#" rel="lightbox" title="Gráfico gerado pelo Scilab">Gráfico gerado pelo Scilab</a>  
-</div>
-</body>
+      </div>  
+      <div id="cont-bot"></div>  
+    </center>
+    <div id="grafico">
+      <a style="display: none;" id="foto" href="#" rel="lightbox" title="Gráfico gerado pelo Scilab">Gráfico gerado pelo Scilab</a>  
+    </div>
+  </body>
 </html>
 
 

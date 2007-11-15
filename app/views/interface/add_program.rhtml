@@ -13,6 +13,10 @@
         <%= form.text_area :parametros %><br/>
         Digite aqui o código do seu programa na linguagem do Scilab (não esqueça dos caracteres de ponto e vírgula  no final das linhas):<br/>
         <%= form.text_area :codigo %><br/>
+        <br/>
+        Selecione o tipo de retorno do programa:<br/>
+        <%= form.select :tipo_retorno, Program::TIPOS_RETORNO, :prompt => "Selecione o retorno"  %><br/>
+        <br/>
         Marque as bibliotecas que deseja incluir durante a execução do programa:<br/>
         <br/>
         Minhas bibliotecas:<br/>

@@ -12,37 +12,35 @@
           </ul>
         </p>
       <% end %>
-      <% form_remote_tag( :url => { :action => "process_program", :id => @program },
-        :before => "$('loader').show()",
-        :complete => "$('loader').hide()" ) do %>
+      <% form_remote_tag( :url => { :action => "process_program", :id => @program }, :before => "$('loader').show(); $('retorno_execucao').hide(); $('retorno_execucao_codigo').hide()", :complete => "$('loader').hide()" ) do %>
         <% for key in @parametros.keys %>
-          <% if @parametros[key].class != Array %>
-            Variável <%= key %>:<br/>
-            <%= text_field_tag "parametros[#{key}]", "#{@parametros[key]}" %><br/>
-          <% else  %>
-            <% @parametros[key].each_with_index do |item, index| %>
-              Valor do elemento <%= key %>(<%= index+1 %>):<br/>
-              <%= text_field_tag "parametros[#{key}][]", @parametros[key][index] %><br/>
-            <% end %>
-          <% end %>
-        <% end %>
-        <%= submit_tag "Executar" %>
-      <% end %>
+           <% if @parametros[key].class != Array %>
+             Variável <%= key %>:<br/>
+             <%= text_field_tag "parametros[#{key}]", "#{@parametros[key]}", :size => 5 %><br/>
+           <% else %>
+             <% @parametros[key].each_with_index do |item, index| %>
+               Valor do elemento do array <%= key %>(<%= index+1 %>):<br/>
+               <%= text_field_tag "parametros[#{key}][]", @parametros[key][index], :size => 5 %><br/>
+             <% end %>
+           <% end %>
+         <% end %>
+       <%= submit_tag "Executar" %>
+     <% end %>
     </p>
-    <p>
+    <div>
       <%= link_to_function "Ver o código do programa", visual_effect(:toggle_blind, :codigo) %>
       <div id="codigo" style="display: none;">
-        <div>
-          <%= @program.codigo.gsub(/\r\n/,"<br/>")  %>
-        </div>
+        <div><%= @program.codigo.gsub(/\r\n/,"<br/>")  %></div>
       </div>
-    </p>
-    <p>
-      <div id="div_grafico_gerado" style="display: none">
-        <div id="conteiner">
-        </div>
-      </div>
-    </p>
+    </div>
+    <div id="retorno_execucao" style="display: none;">
+      <%= link_to_function "Ver o retorno de execução do Scilab", visual_effect(:toggle_blind, :retorno_execucao_codigo) %>
+      <div id="retorno_execucao_codigo" style="display: none;"></div>
+    </div>
+    <div id="retorno_variaveis" style="display: none;"></div>
+    <div id="div_grafico_gerado" style="display: none">
+      <div id="conteiner"></div>
+    </div>
   </div>
 </div>
 

@@ -10,7 +10,7 @@
         <% form_remote_tag(:url => { :action => "processa" },
           :before => "$('loader').show();",
           :complete => "$('loader').hide();" )  do %>
-          <%= text_area :textarea, :codigo, :cols =>55, :rows => 20 %><br/>
+          <%= text_area_tag "codigo" %><br/>
           <%= submit_tag "Enviar" %>
         <% end %>
       </div>

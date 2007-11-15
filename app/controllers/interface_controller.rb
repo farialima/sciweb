@@ -39,15 +39,22 @@ class InterfaceController < ApplicationController
   def process_program
     @program = Program.find(params[:id])
     @program.adiciona_parametros params[:parametros]
-    #render :inline => "<%= debug @program %>"
-    #return
     @identificador = @program.nome + rand(1000).to_s
-    @nome_arquivo = "public/images/#{@identificador}.gif"
-    retorno = ScilabInterface.new(@program, @nome_arquivo).exec
+    retorno_do_scilab = ScilabInterface.new(@program, "public/images/#{@identificador}.gif").exec
     render :update do |page|
-      page.replace_html :conteiner, :partial => "grafico_gerado"
-      page.delay(1) { page.visual_effect :toggle_blind, :div_grafico_gerado }
-      page.alert(retorno)
+      page.replace_html :retorno_execucao_codigo, retorno_do_scilab.gsub(/\n/, "<br/>")
+      page << "$('retorno_execucao').show()"
+      if @program.tipo_retorno == "grafico"
+        # Usando lightbox:
+        page << "$('foto').href = '/images/#{@identificador}.gif';"
+        page << "$('foto').onclick();"
+        # Mostrando a imagem na propria pagina:
+        #  page.replace_html :conteiner, :partial => "grafico_gerado"
+        #  page.delay(1) { page.visual_effect :toggle_blind, :div_grafico_gerado }
+      else
+        page.replace_html :retorno_variaveis, ScilabInterface.extract_values(retorno_do_scilab)
+        page << "$('retorno_variaveis').show()"
+      end
     end
   end
   
@@ -127,7 +134,7 @@ class InterfaceController < ApplicationController
   end
   
   def processa
-    @codigo = params[:textarea][:codigo]
+    @codigo = params[:codigo]
     @identificador = rand(1000)
     @nome_arquivo = "public/images/#{@identificador}.gif"
     @comando = ScilabInterface.new(@codigo, @nome_arquivo).exec

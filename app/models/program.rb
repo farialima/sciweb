@@ -1,8 +1,13 @@
 class Program < ActiveRecord::Base
-  validates_presence_of :nome
-  validates_presence_of :descricao
-  validates_presence_of :codigo
-  validates_presence_of :parametros
+  
+  TIPOS_RETORNO = [
+    #Exibido  Armazenado
+    ["Gráfico",         "grafico"],
+    ["Numérico",     "numerico"]
+  ]
+  
+  validates_presence_of :nome, :descricao, :codigo, :parametros, :tipo_retorno
+  validates_inclusion_of :tipo_retorno, :in => TIPOS_RETORNO.map { |disp, value| value }
   
   belongs_to :user
   has_and_belongs_to_many :libs
