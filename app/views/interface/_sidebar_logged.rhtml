@@ -1,45 +1,44 @@
-<div id="home-right">
+<div id="whatsnext">
+  <div class="title">Navegação</div>
+  <div class="container">
+    <b><%= link_to "Sobre", :action => :index %></b>
+    <b><%= link_to_remote "Enviar código", :url => {:action => :muda_secao, :secao => "enviar_codigo" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
+    <b><%= link_to_remote "Exemplos", :url => {:action => :muda_secao, :secao => "exemplos" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
+    <b><%= link_to "Adicionar programa", :action => "add_program" %></b>
+    <b><%= link_to "Adicionar biblioteca", :action => "add_lib" %></b>
+    <b><%= link_to "Gerenciar Cluster", :action => "manage_cluster" %></b>
+    <b><%= link_to "Logout", :action => "logout" %></b>
+  </div>
   <div id="whatsnext">
-    <div class="title">Navegação</div>
+    <div class="title">Meus Programas</div>
     <div class="container">
-      <b><%= link_to "Sobre", :action => :index %></b>
-      <b><%= link_to_remote "Enviar código", :url => {:action => :muda_secao, :secao => "enviar_codigo" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
-      <b><%= link_to_remote "Exemplos", :url => {:action => :muda_secao, :secao => "exemplos" }, :before => "new Effect.toggle('home-left', 'appear', { duration: 0.5, queue: 'end' } )" %></b>
-      <b><%= link_to "Adicionar programa", :action => "add_program" %></b>
-      <b><%= link_to "Adicionar biblioteca", :action => "add_lib" %></b>
-      <b><%= link_to "Logout", :action => "logout" %></b>
+      <% for program in my_programs %>
+        <b><%= link_to program.nome, :action => "exec_program", :id => program.id  %></b>
+      <% end %>
     </div>
-    <div id="whatsnext">
-      <div class="title">Meus Programas</div>
-      <div class="container">
-        <% for program in my_programs %>
-          <b><%= link_to program.nome, :action => "exec_program", :id => program.id  %></b>
-        <% end %>
-      </div>
+  </div>
+  <div id="whatsnext">
+    <div class="title">Minhas Bibliotecas</div>
+    <div class="container">
+      <% for lib in my_libs %>
+        <b><%= link_to lib.nome, :action => "edit_lib", :id => lib.id  %></b>
+      <% end %>
     </div>
-    <div id="whatsnext">
-      <div class="title">Minhas Bibliotecas</div>
-      <div class="container">
-        <% for lib in my_libs %>
-          <b><%= link_to lib.nome, :action => "edit_lib", :id => lib.id  %></b>
-        <% end %>
-      </div>
+  </div>
+  <div id="whatsnext">
+    <div class="title">Programas Públicos</div>
+    <div class="container">
+      <% for program in public_programs %>
+        <b><%= link_to program.nome, :action => "exec_program", :id => program  %></b>
+      <% end %>
     </div>
-    <div id="whatsnext">
-      <div class="title">Programas Públicos</div>
-      <div class="container">
-        <% for program in public_programs %>
-          <b><%= link_to program.nome, :action => "exec_program", :id => program  %></b>
-        <% end %>
-      </div>
-    </div>
-    <div id="whatsnext">
-      <div class="title">Bibliotecas Públicas</div>
-      <div class="container">
-        <% for lib in public_libs %>
-          <b><%= link_to lib.nome, :action => "view_lib", :id => lib.id  %></b>
-        <% end %>
-      </div>
+  </div>
+  <div id="whatsnext">
+    <div class="title">Bibliotecas Públicas</div>
+    <div class="container">
+      <% for lib in public_libs %>
+        <b><%= link_to lib.nome, :action => "view_lib", :id => lib.id  %></b>
+      <% end %>
     </div>
   </div>
 </div>

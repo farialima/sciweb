@@ -1,6 +1,8 @@
 class InterfaceController < ApplicationController
   
   require "yaml"
+  require "ping"
+  require "drb"
   
   layout "interface"
   before_filter :authorize, :except => [ :login, :add_user, :logout ]
@@ -40,20 +42,48 @@ class InterfaceController < ApplicationController
     @program = Program.find(params[:id])
     @program.adiciona_parametros params[:parametros]
     @identificador = @program.nome + rand(1000).to_s
-    retorno_do_scilab = ScilabInterface.new(@program, "public/images/#{@identificador}.gif").exec
-    render :update do |page|
-      page.replace_html :retorno_execucao_codigo, retorno_do_scilab.gsub(/\n/, "<br/>")
-      page << "$('retorno_execucao').show()"
-      if @program.tipo_retorno == "grafico"
-        # Usando lightbox:
-        page << "$('foto').href = '/images/#{@identificador}.gif';"
-        page << "$('foto').onclick();"
-        # Mostrando a imagem na propria pagina:
-        #  page.replace_html :conteiner, :partial => "grafico_gerado"
-        #  page.delay(1) { page.visual_effect :toggle_blind, :div_grafico_gerado }
-      else
-        page.replace_html :retorno_variaveis, ScilabInterface.extract_values(retorno_do_scilab)
-        page << "$('retorno_variaveis').show()"
+    node_ready = get_node_ready(Node.find(:all))
+    if node_ready.nil?
+      retorno_do_scilab = ScilabInterface.new(@program, "public/images/#{@identificador}.gif").exec
+      render :update do |page|
+        page.replace_html :retorno_execucao_codigo, retorno_do_scilab.gsub(/\n/, "<br/>")
+        page << "$('retorno_execucao').show()"
+        if @program.tipo_retorno == "grafico"
+          # Usando lightbox:
+          page << "$('foto').href = '/images/#{@identificador}.gif';"
+          page << "$('foto').onclick();"
+          # Mostrando a imagem na propria pagina:
+          #  page.replace_html :conteiner, :partial => "grafico_gerado"
+          #  page.delay(1) { page.visual_effect :toggle_blind, :div_grafico_gerado }
+        else
+          page.replace_html :retorno_variaveis, ScilabInterface.extract_values(retorno_do_scilab)
+          page << "$('retorno_variaveis').show()"
+        end
+      end
+    else
+      remote_node = DRbObject.new(nil, "druby://#{node_ready.ip}:9000")
+      @program.adiciona_libs
+      remote_node.codigo = @program.codigo
+      remote_node.tipo_retorno = "grafico"
+      remote_node.grafico = @identificador + ".gif"
+      retorno_do_scilab = remote_node.exec
+      grafico = File.open( "public/images/#{@identificador}.gif","wb")
+      grafico.write remote_node.get_image
+      grafico.close
+      render :update do |page|
+        page.replace_html :retorno_execucao_codigo, retorno_do_scilab.gsub(/\n/, "<br/>")
+        page << "$('retorno_execucao').show()"
+        if @program.tipo_retorno == "grafico"
+          # Usando lightbox:
+          page << "$('foto').href = '/images/#{@identificador}.gif';"
+          page << "$('foto').onclick();"
+          # Mostrando a imagem na propria pagina:
+          #  page.replace_html :conteiner, :partial => "grafico_gerado"
+          #  page.delay(1) { page.visual_effect :toggle_blind, :div_grafico_gerado }
+        else
+          page.replace_html :retorno_variaveis, ScilabInterface.extract_values(retorno_do_scilab)
+          page << "$('retorno_variaveis').show()"
+        end
       end
     end
   end
@@ -132,6 +162,65 @@ class InterfaceController < ApplicationController
     flash[:notice] = "A biblioteca foi removida com sucesso."
     redirect_to :action => "index" 
   end
+  
+  # Actions referentes ao cluster
+  def manage_cluster
+    @nodes = Node.find(:all)
+  end
+  
+  def add_node
+    @node = Node.new
+  end
+  
+  def save_node
+    @node = Node.new(params[:node])
+    if request.post? and @node.save
+      flash[:notice] = "Host adicionado com sucesso ao cluster."
+      redirect_to :action => "index"
+    else
+      flash[:notice] = "Problemas ao adicionar o nó... Tente novamente."
+      render :action => "add_node"
+    end
+  end
+  
+  def destroy_node
+    Node.find(params[:id]).destroy
+    flash[:notice] = "O nó foi removido com sucesso."
+    redirect_to :action => "manage_cluster" 
+  end
+  
+  def get_node_status
+    #    render :nothing => true
+    #    return
+    @node = Node.find(params[:node_id])
+    @status = check_node_status(@node)
+    render :partial => "get_node_status"
+  end
+  
+  def check_node_status(node)
+    if Ping.pingecho(node.ip)
+      DRb.start_service()
+      node = DRbObject.new(nil, "druby://#{node.ip}:9000")
+      begin
+        node.cpu
+        status = "ready"
+      rescue Exception
+        status = "notready"
+      end
+    else
+      status = "offline"
+    end
+    status
+  end
+  
+  # metodo para retornar o Node que esta alcancavel, pronto e com a menor carga no processador, selecionando dentre um array de nodes
+  def get_node_ready(nodes)
+    ready_nodes = nodes.select { |node| check_node_status(node) == "ready" }
+    idle_nodes = []
+    ready_nodes.each { |node| idle_nodes << node if !(DRbObject.new(nil, "druby://#{node.ip}:9000").executando_job) }
+    idle_nodes.min{|a,b| DRbObject.new(nil, "druby://#{a.ip}:9000").cpu <=>  DRbObject.new(nil, "druby://#{b.ip}:9000").cpu }
+  end
+  # FIM - Actions referentes ao cluster
   
   def processa
     @codigo = params[:codigo]

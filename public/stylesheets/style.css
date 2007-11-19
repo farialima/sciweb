@@ -266,6 +266,42 @@ padding:20px;
 text-align:center;
 width:206px;
 }
+
+/* Entradas para a exibicao do estado do cluster */
+
+#cluster {
+border:1px solid #EEEEEE;
+margin-top:15px;
+width:246px;
+}
+#cluster .title {
+background-color:white;
+border-bottom:3px solid #F78539;
+color:#656565;
+font-size:18px;
+padding:7px 0px 5px;
+text-align:center;
+width:246px;
+}
+#cluster .container {
+border-top:3px solid #FB5B1C;
+}
+#cluster .container b {
+background-color:#F4F4F4;
+background-image:url("/images/spot_bg.gif");
+background-repeat:repeat-x;
+color:#A0A0A0;
+display:block;
+font-size:15px;
+font-weight:normal;
+padding:10px 20px;
+text-align:center;
+width:206px;
+}
+
+
+/* FIM - Entradas para a exibicao do estado do cluster */
+
 .para {
 margin:0pt 0pt 15px;
 }

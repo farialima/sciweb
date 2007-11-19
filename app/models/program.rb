@@ -25,4 +25,13 @@ class Program < ActiveRecord::Base
     end
     self.codigo << codigo_original
   end
+  
+  def adiciona_libs
+    codigo_original = self.codigo
+    self.codigo = ""
+    if self.libs.count > 0
+      self.libs.each { |i| self.codigo << i.codigo.gsub(/\r/, "") + "\n" }
+    end
+    self.codigo << codigo_original
+  end
 end

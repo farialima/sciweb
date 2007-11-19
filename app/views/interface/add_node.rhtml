@@ -1,0 +1,17 @@
+<div id="home-left">
+  <div id="para">
+    <h3>Adicionar nó</h3>
+    <p><%= error_messages_for :node %></p>
+    <p>
+      <% form_for :node, :url => { :action => "save_node" } , :method => "post" do |form| %>
+        Endereço IP do nó:<br/>
+        <%= form.text_field :ip %><br/>
+        <%= submit_tag "Adicionar" %>
+          <% end %>
+    </p>
+  </div>
+</div>
+
+<div id="home-right">
+  <%= render :partial => "sidebar_logged" %>
+</div>

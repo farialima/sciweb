@@ -1,0 +1,9 @@
+<div id="cluster">
+  <div class="title">Cluster</div>
+  <div class="container">
+    <% for node in Node.find(:all) %>
+    <div id="node<%= node.id %>"><b><%= image_tag "loader.gif" %><%= node.ip %></b></div>
+      <%= periodically_call_remote :url => { :action => "get_node_status", :node_id => node.id  }, :update => "node#{node.id}", :frequency => 10  %>
+  <% end %>
+  </div>
+</div>

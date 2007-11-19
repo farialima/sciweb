@@ -1,0 +1,3 @@
+<% if @status == "ready" %><b><%= image_tag "enable_server.png" %> <%= @node.ip %></b><% end %>
+<% if @status == "notready" %><b><%= image_tag "server.png" %> <%= @node.ip %></b><% end %>
+<% if @status == "offline" %><b><%= image_tag "desable_server.png" %> <%= @node.ip %></b><% end %>

@@ -1,0 +1,22 @@
+<div id="home-left">
+  <div id="para">
+    <h3>Gerenciar Cluster</h3>
+    <p>Opções:</p>
+    <p>
+      <ul>
+        <li><%= link_to "Adicionar nó", :action => "add_node"  %></li>
+      </ul>
+    </p>
+    <p>Lista de nós:</p>
+    <p>
+      <% for node in @nodes %>
+        <ul><%= node.ip %> <%= link_to "Remover", { :action => "destroy_node", :id => node.id }, :confirm => "Tem certeza?", :method => :post  %></ul>
+      <% end %>
+    </p>
+  </div>
+</div>
+
+<div id="home-right">
+  <%= render :partial => "sidebar_cluster"  %>
+  <%= render :partial => "sidebar_logged" %>
+</div>
