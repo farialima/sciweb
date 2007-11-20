@@ -16,11 +16,20 @@ class Program < ActiveRecord::Base
     codigo_original = self.codigo
     self.codigo = ""
     parametros_adicionais.each do |key, value|
-      if value.class != Array
+      if value.class != Array and value.class != HashWithIndifferentAccess
         self.codigo << "#{key} = #{value};\n"  
-      else
+      end
+      if value.class == Array
         self.codigo << "#{key} = zeros(#{value.length}, 1);\n"
-        value.each_with_index { |item, index| codigo << "#{key}(#{index+1}) = #{item};\n" }
+        value.each_with_index { |item, index| self.codigo << "#{key}(#{index+1}) = #{item};\n" }
+      end
+      if value.class == HashWithIndifferentAccess
+        self.codigo << "#{key} = zeros(#{value.keys.length}, #{value[value.keys.first].length});\n"
+        value.each do |inner_key, inner_value|
+          inner_value.each_with_index do |inner_item, inner_index|
+            self.codigo << "#{key}(#{inner_key.to_i + 1},#{(inner_index.to_i + 1).to_s}) = #{inner_item};\n"
+          end
+        end
       end
     end
     self.codigo << codigo_original

@@ -13,17 +13,34 @@
         </p>
       <% end %>
       <% form_remote_tag( :url => { :action => "process_program", :id => @program }, :before => "$('loader').show(); $('retorno_execucao').hide(); $('retorno_execucao_codigo').hide()", :complete => "$('loader').hide()" ) do %>
+        <table cellspacing="5">
         <% for key in @parametros.keys %>
            <% if @parametros[key].class != Array %>
-             Variável <%= key %>:<br/>
-             <%= text_field_tag "parametros[#{key}]", "#{@parametros[key]}", :size => 5 %><br/>
+             <tr>
+             <td><%= key %>:</td>
+             <td><%= text_field_tag "parametros[#{key}]", "#{@parametros[key]}", :size => 5 %></td>
+             </tr>
            <% else %>
-             <% @parametros[key].each_with_index do |item, index| %>
-               Valor do elemento do array <%= key %>(<%= index+1 %>):<br/>
-               <%= text_field_tag "parametros[#{key}][]", @parametros[key][index], :size => 5 %><br/>
+             <% if @parametros[key].first.class != Array %>
+               <% @parametros[key].each_with_index do |item, index| %>
+                 <tr>
+                  <td><%= key %>(<%= index+1 %>):</td>
+                  <td><%= text_field_tag "parametros[#{key}][]", @parametros[key][index], :size => 5 %></td>
+                 </tr>
+               <% end %>
+             <% else %>
+               <% @parametros[key].each_with_index do |item, index| %>
+                 <% item.each_with_index do |inner_item, inner_index| %>
+                   <tr>
+                     <td><%= key %>(<%= index+1 %>, <%= inner_index+1 %>):</td>
+                     <td><%= text_field_tag "parametros[#{key}][#{index}][]", @parametros[key][index][inner_index], :size => 5 %></td>
+                   </tr>
+                 <% end %>
+               <% end %>
              <% end %>
            <% end %>
          <% end %>
+         </table>
        <%= submit_tag "Executar" %>
      <% end %>
     </p>
