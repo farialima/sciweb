@@ -112,10 +112,7 @@ class InterfaceController < ApplicationController
   end
   
   def destroy_program
-    if session[:user_id] != Program.find(params[:id]).user.id
-      redirect_to :action => "index"
-      return
-    end
+    if session[:user_id] != Program.find(params[:id]).user.id then redirect_to :action => "index"; return end
     Program.find(params[:id]).destroy
     flash[:notice] = "O programa foi removido com sucesso."
     redirect_to :action => "index" 
@@ -157,7 +154,7 @@ class InterfaceController < ApplicationController
   end
   
   def destroy_lib
-    redirect_to :action => "index"; return if session[:user_id] != Lib.find(params[:id]).user.id
+    if session[:user_id] != Lib.find(params[:id]).user.id then redirect_to :action => "index"; return end
     Lib.find(params[:id]).destroy
     flash[:notice] = "A biblioteca foi removida com sucesso."
     redirect_to :action => "index" 
@@ -190,8 +187,6 @@ class InterfaceController < ApplicationController
   end
   
   def get_node_status
-    #    render :nothing => true
-    #    return
     @node = Node.find(params[:node_id])
     @status = check_node_status(@node)
     render :partial => "get_node_status"
