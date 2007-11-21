@@ -7,10 +7,10 @@
         Nome da biblioteca (utilize um nome curto):<br/>
         <%= form.text_field :nome %><br/>
         Descrição da biblioteca:<br/>
-        <%= form.text_field :descricao %><br/>
+        <%= form.text_area :descricao, :cols => "64", :rows => "5" %><br/>
         Esta biblioteca é pública? <%= form.check_box :publico %><br/><br/>
         Digite aqui o código da sua biblioteca na linguagem do Scilab:<br/>
-        <%= form.text_area :codigo %><br/>
+        <%= form.text_area :codigo, :cols => "64", :rows => "10" %><br/>
         <%= submit_tag "Salvar" %>
       <% end  %>
     </p>

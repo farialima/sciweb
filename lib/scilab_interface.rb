@@ -19,6 +19,6 @@ class ScilabInterface
   end
   
   def ScilabInterface.extract_values(string_retorno)
-    string_retorno.split("-->").grep(/^\s*\w+\s+=$/).join("<br/>").gsub(/\s/, "&nbsp;")
+    string_retorno.split("-->").grep(/^\s*\w+\s+=$/).join("<br/>").gsub(/\s/, "&nbsp;").gsub(/ans\s*/, "").gsub(/=/, "")
   end
 end

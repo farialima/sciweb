@@ -12,9 +12,9 @@
           </ul>
         </p>
       <% end %>
-      <% form_remote_tag( :url => { :action => "process_program", :id => @program }, :before => "$('loader').show(); $('retorno_execucao').hide(); $('retorno_execucao_codigo').hide()", :complete => "$('loader').hide()" ) do %>
+      <% form_remote_tag( :url => { :action => "process_program", :id => @program }, :before => "$('loader').show(); $('retorno_execucao').hide(); $('retorno_execucao_codigo').hide(); $('retorno_variaveis').hide()", :complete => "$('loader').hide()" ) do %>
         <table cellspacing="5">
-        <% for key in @parametros.keys %>
+        <% for key in @parametros.keys.sort %>
            <% if @parametros[key].class != Array %>
              <tr>
              <td><%= key %>:</td>

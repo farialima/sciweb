@@ -20,7 +20,7 @@ class Program < ActiveRecord::Base
         self.codigo << "#{key} = #{value};\n"  
       end
       if value.class == Array
-        self.codigo << "#{key} = zeros(#{value.length}, 1);\n"
+        self.codigo << "#{key} = zeros(#{value.length});\n"
         value.each_with_index { |item, index| self.codigo << "#{key}(#{index+1}) = #{item};\n" }
       end
       if value.class == HashWithIndifferentAccess

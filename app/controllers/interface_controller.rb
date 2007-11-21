@@ -41,16 +41,17 @@ class InterfaceController < ApplicationController
   def process_program
     @program = Program.find(params[:id])
     @program.adiciona_parametros params[:parametros]
+    #render :inline => "<%= debug @program.codigo %>"; return
     @identificador = @program.nome + rand(1000).to_s
     node_ready = get_node_ready(Node.find(:all))
     if node_ready.nil?
-      retorno_do_scilab = ScilabInterface.new(@program, "public/images/#{@identificador}.gif").exec
+      retorno_do_scilab = ScilabInterface.new(@program, "public/images/graficos/#{@identificador}.gif").exec
       render :update do |page|
         page.replace_html :retorno_execucao_codigo, retorno_do_scilab.gsub(/\n/, "<br/>")
         page << "$('retorno_execucao').show()"
         if @program.tipo_retorno == "grafico"
           # Usando lightbox:
-          page << "$('foto').href = '/images/#{@identificador}.gif';"
+          page << "$('foto').href = '/images/graficos/#{@identificador}.gif';"
           page << "$('foto').onclick();"
           # Mostrando a imagem na propria pagina:
           #  page.replace_html :conteiner, :partial => "grafico_gerado"
@@ -67,7 +68,7 @@ class InterfaceController < ApplicationController
       remote_node.tipo_retorno = "grafico"
       remote_node.grafico = @identificador + ".gif"
       retorno_do_scilab = remote_node.exec
-      grafico = File.open( "public/images/#{@identificador}.gif","wb")
+      grafico = File.open( "public/images/graficos/#{@identificador}.gif","wb")
       grafico.write remote_node.get_image
       grafico.close
       render :update do |page|
@@ -75,7 +76,7 @@ class InterfaceController < ApplicationController
         page << "$('retorno_execucao').show()"
         if @program.tipo_retorno == "grafico"
           # Usando lightbox:
-          page << "$('foto').href = '/images/#{@identificador}.gif';"
+          page << "$('foto').href = '/images/graficos/#{@identificador}.gif';"
           page << "$('foto').onclick();"
           # Mostrando a imagem na propria pagina:
           #  page.replace_html :conteiner, :partial => "grafico_gerado"
@@ -250,9 +251,12 @@ class InterfaceController < ApplicationController
         redirect_to :action => "index"
       else
         flash[:notice] = "Nome de usuário/senha inválidos"
+        render :action => "login"
+        return
       end
     else
       @user = User.new
+      render :action => "login"
     end
   end
   

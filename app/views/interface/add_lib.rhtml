@@ -6,11 +6,11 @@
       <% form_for :lib, :url => { :action => "save_lib" } do |form|  %>
         Nome da biblioteca (utilize um nome curto, sem espaços):<br/>
         <%= form.text_field :nome %><br/>
-        Descrição do programa:<br/>
-        <%= form.text_field :descricao %><br/>
+        Descrição da biblioteca:<br/>
+        <%= form.text_area :descricao, :cols => "64", :rows => "5" %><br/>
         Esta biblioteca é pública? <%= form.check_box :publico %><br/><br/>
         Digite aqui o código da sua biblioteca/função na linguagem do Scilab (não esqueça dos caracteres de ponto e vírgula  no final das linhas):<br/>
-        <%= form.text_area :codigo, :value => "
+        <%= form.text_area :codigo, :cols => "65", :rows => "10", :value => "
 function [soma, produto] = nome_funcao(paramX, paramY)
 
 soma = paramX + paramY;

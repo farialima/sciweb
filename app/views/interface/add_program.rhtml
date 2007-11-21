@@ -7,27 +7,28 @@
         Nome do programa (utilize um nome curto, sem espaços):<br/>
         <%= form.text_field :nome %><br/>
         Descrição do programa:<br/>
-        <%= form.text_field :descricao %><br/>
+        <%= form.text_area :descricao, :cols => "64", :rows => "5" %><br/>
         Este programa é público? <%= form.check_box :publico %><br/><br/>
         Digite aqui a definição do parametros do seu programa. Eles servirão para construir uma interface gráfica para que os dados variáveis indicados possam ser modificados no próprio navegador:<br/>
-        <%= form.text_area :parametros %><br/>
+        <%= form.text_area :parametros, :cols => "64", :rows => "5" %><br/>
         Digite aqui o código do seu programa na linguagem do Scilab (não esqueça dos caracteres de ponto e vírgula  no final das linhas):<br/>
-        <%= form.text_area :codigo %><br/>
+        <%= form.text_area :codigo, :cols => "64", :rows => "15" %><br/>
         <br/>
         Selecione o tipo de retorno do programa:<br/>
         <%= form.select :tipo_retorno, Program::TIPOS_RETORNO, :prompt => "Selecione o retorno"  %><br/>
         <br/>
         Marque as bibliotecas que deseja incluir durante a execução do programa:<br/>
         <br/>
-        Minhas bibliotecas:<br/>
+        <h4>Minhas bibliotecas:</h4>
         <% for lib in my_libs %>
           <%= check_box_tag("lib[]", lib.id)  %><%= lib.nome %><br/>
         <% end %>
         <br/>
-        Bibliotecas Públicas:<br/>
+        <h4>Bibliotecas Públicas:</h4>
         <% for lib in public_libs %>
           <%= check_box_tag("lib[]", lib.id)  %><%= lib.nome %><br/>
         <% end %>
+        <br/>
         <%= submit_tag "Enviar" %>
       <% end  %>
     </p>

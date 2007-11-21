@@ -312,6 +312,13 @@ font-size:30px;
 font-weight:normal;
 margin:5px 1px;
 }
+h4 {
+color:#FF7E00;
+font-family:'Myriad Pro',Arial;
+font-size:20px;
+font-weight:normal;
+margin:5px 1px;
+}
 .dl_btn_info {
 color:white;
 height:0px;
@@ -355,6 +362,18 @@ margin-bottom:5px;
 .mt5 {
 margin-top:5px;
 }
+
+/* Personalizacao da textarea */
+
+textarea, input {
+background:#EEEEEE none repeat scroll 0%;
+border:1px solid #C0C0C0;
+font-family:monospace;
+margin:2px;
+font-size: 12px;
+}
+
+/* Definicoes para o flash e erros*/
 
 #notice {
   border: 1px solid red;
