@@ -19,12 +19,12 @@
         <br/>
         Marque as bibliotecas que deseja incluir durante a execução do programa:<br/>
         <br/>
-        Minhas bibliotecas:<br/>
+        <h4>Minhas bibliotecas:</h4>
         <% for lib in my_libs %>
           <%= check_box_tag("lib[]", lib.id, @program.libs.collect{|i| i.id}.include?(lib.id) ) %><%= lib.nome %><br/>
         <% end %>
         <br/>
-        Bibliotecas Públicas:<br/>
+        <h4>Bibliotecas Públicas:</h4>
         <% for lib in public_libs %>
           <%= check_box_tag("lib[]", lib.id, @program.libs.collect{|i| i.id}.include?(lib.id) ) %><%= lib.nome %><br/>
         <% end %>

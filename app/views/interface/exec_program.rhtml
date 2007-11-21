@@ -47,14 +47,14 @@
     <div>
       <%= link_to_function "Ver o código do programa", visual_effect(:toggle_blind, :codigo) %>
       <div id="codigo" style="display: none;">
-        <div><%= @program.codigo.gsub(/\r\n/,"<br/>")  %></div>
+        <div class="codigo"><%= @program.codigo.gsub(/\r\n/,"<br/>")  %></div>
       </div>
     </div>
     <div id="retorno_execucao" style="display: none;">
       <%= link_to_function "Ver o retorno de execução do Scilab", visual_effect(:toggle_blind, :retorno_execucao_codigo) %>
-      <div id="retorno_execucao_codigo" style="display: none;"></div>
+      <div id="retorno_execucao_codigo" class="codigo" style="display: none;"></div>
     </div>
-    <div id="retorno_variaveis" style="display: none;"></div>
+    <div id="retorno_variaveis" class="codigo" style="display: none;"></div>
     <div id="div_grafico_gerado" style="display: none">
       <div id="conteiner"></div>
     </div>

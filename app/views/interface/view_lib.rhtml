@@ -6,7 +6,7 @@
       <p>Autor: <%= h @lib.user.nomecompleto %></p>
       <p><%= link_to_function "Ver o código da biblioteca", visual_effect(:toggle_blind, :codigo) %></p>
       <div id="codigo" style="display: none;">
-        <div>
+        <div class="codigo">
           <%= @lib.codigo.gsub(/\r\n/,"<br/>")  %>
         </div>
       </div>

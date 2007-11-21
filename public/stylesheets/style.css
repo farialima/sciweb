@@ -383,6 +383,14 @@ font-size: 12px;
   font: bold sans-serif;
 }
 
+.codigo {
+  border: 1px solid black;
+  padding: 1em;
+  margin-bottom: 2em;
+  background-color: #f0f0f0;
+  font: bold sans-serif;
+}
+
 .fieldWithErrors {
   padding: 2px;
   background-color: red;
@@ -419,3 +427,11 @@ font-size: 12px;
   list-style: square;
 }
 
+#loader {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+/*	margin-left: -100px;*/
+/*	margin-top: -70px;*/
+/*	z-index: 25;*/
+}
