@@ -12,8 +12,7 @@ class InterfaceController < ApplicationController
   end
   
   def add_program
-    @program = Program.new
-    @libs = Lib.new
+    @program, @libs = Program.new, Lib.new
   end
   
   def save_program
@@ -43,9 +42,10 @@ class InterfaceController < ApplicationController
     @program.adiciona_parametros params[:parametros]
     #render :inline => "<%= debug @program.codigo %>"; return
     @identificador = @program.nome + rand(1000).to_s
+    nome_arquivo = `pwd`.chomp.gsub(/\/public/, '') << "/public/images/graficos/#{@identificador}.gif"
     node_ready = get_node_ready(Node.find(:all))
     if node_ready.nil?
-      retorno_do_scilab = ScilabInterface.new(@program, "public/images/graficos/#{@identificador}.gif").exec
+      retorno_do_scilab = ScilabInterface.new(@program, nome_arquivo).exec
       render :update do |page|
         page.replace_html :retorno_execucao_codigo, retorno_do_scilab.gsub(/\n/, "<br/>")
         page << "$('retorno_execucao').show()"
@@ -275,5 +275,4 @@ class InterfaceController < ApplicationController
     end
   end
   ### FIM
-  
 end

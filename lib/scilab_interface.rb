@@ -19,6 +19,9 @@ class ScilabInterface
   end
   
   def ScilabInterface.extract_values(string_retorno)
-    string_retorno.split("-->").grep(/^\s*\w+\s+=$/).join("<br/>").gsub(/\s/, "&nbsp;").gsub(/ans\s*/, "").gsub(/=/, "")
+    #string_retorno.split("-->").grep(/^\s*\w+\s+=/).join("<br/>").gsub(/\s/, "&nbsp;").gsub(/ans\s*/, "").gsub(/=/, "")
+    #string_retorno.gsub(/\n/,"").split("-->").grep(/^\s*\w+\s+=/).collect{ |i| i.gsub(/ans  =/, "") }.collect{|i| i.gsub(/=/,"->=<br/>").gsub(/\./, ".<br/>").split("=")}.flatten.join("<br/>")
+    #string_retorno.gsub(/\n/,"").split("-->").grep(/^\s*\w+\s+=/).collect{ |i| i.gsub(/ans  =/, "") }.collect{|i| i.gsub(/=/,"->=<br/>").gsub(/\.\s+/, ".<br/>")}.collect{|i| if i.match(/\d+\.\d+/) then i.gsub(/\s+/, "<br/>") else i end }.collect{|i| i.split("=")}.flatten.join("<br/>")
+    string_retorno.split("-->").grep(/^\s*\w+\s+=/).collect{ |i| i.gsub(/ans\s+=/, "").gsub(/\n/, "<br/>") }
   end
 end
