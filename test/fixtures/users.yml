@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 6
+#
+# Table name: users
+#
+#  id              :integer         not null, primary key
+#  username        :string(20)      
+#  hashed_password :string(255)     
+#  salt            :string(255)     
+#  nomecompleto    :string(50)      
+#  created_at      :datetime        
+#  updated_at      :datetime        
+#
+
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 one:
   id: 1

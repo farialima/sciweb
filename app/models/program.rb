@@ -1,3 +1,20 @@
+# == Schema Information
+# Schema version: 6
+#
+# Table name: programs
+#
+#  id           :integer         not null, primary key
+#  user_id      :integer         not null
+#  nome         :string(40)      
+#  descricao    :text            
+#  codigo       :text            
+#  parametros   :text            
+#  publico      :boolean         default(TRUE)
+#  created_at   :datetime        
+#  updated_at   :datetime        
+#  tipo_retorno :string(20)      
+#
+
 class Program < ActiveRecord::Base
   
   TIPOS_RETORNO = [

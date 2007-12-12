@@ -1,3 +1,12 @@
+# == Schema Information
+# Schema version: 6
+#
+# Table name: nodes
+#
+#  id :integer         not null, primary key
+#  ip :string(255)     
+#
+
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 one:
   id: 1

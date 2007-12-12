@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 6
+#
+# Table name: libs
+#
+#  id         :integer         not null, primary key
+#  user_id    :integer         not null
+#  nome       :string(40)      
+#  descricao  :text            
+#  codigo     :text            
+#  publico    :boolean         default(TRUE)
+#  created_at :datetime        
+#  updated_at :datetime        
+#
+
 class Lib < ActiveRecord::Base
   validates_presence_of :nome
   validates_presence_of :descricao

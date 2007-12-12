@@ -6,7 +6,7 @@ ActiveRecord::Schema.define(:version => 6) do
 
   create_table "libs", :force => true do |t|
     t.column "user_id",    :integer,                                  :null => false
-    t.column "nome",       :string,   :limit => 20
+    t.column "nome",       :string,   :limit => 40
     t.column "descricao",  :text
     t.column "codigo",     :text
     t.column "publico",    :boolean,                :default => true
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(:version => 6) do
 
   create_table "programs", :force => true do |t|
     t.column "user_id",      :integer,                                  :null => false
-    t.column "nome",         :string,   :limit => 20
+    t.column "nome",         :string,   :limit => 40
     t.column "descricao",    :text
     t.column "codigo",       :text
     t.column "parametros",   :text
