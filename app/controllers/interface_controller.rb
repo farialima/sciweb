@@ -43,51 +43,33 @@ class InterfaceController < ApplicationController
     @program.adiciona_parametros params[:parametros]
     @identificador = @program.nome + rand(1000).to_s
     nome_arquivo = `pwd`.chomp.gsub(/\/public/, '') << "/public/images/graficos/#{@user.username}/#{@identificador}.gif"
-    @job = Job.new(:user_id => @user.id, :program_id => @program.id, :grafico => nome_arquivo, :parametros =>params[:parametros])
+    @job = Job.new(:user_id => @user.id, :program_id => @program.id, :parametros =>params[:parametros])
     retorno_grafico = @program.tem_retorno_grafico?
     node_ready = get_node_ready(Node.find(:all))
     if node_ready.nil?
       @job.id_node = 0
       @job.save
-      fork do
-        retorno_do_scilab = ScilabInterface.new(@program, nome_arquivo, retorno_grafico).exec
-        @job.retorno = retorno_do_scilab
+      spawn do
+        @job.retorno = ScilabInterface.new(@program, nome_arquivo, retorno_grafico).exec
         @job.grafico = "#{@identificador}.gif"
         @job.pronto = true
         @job.save
       end
-      #      render :update do |page|
-      #        page.replace_html :retorno_execucao_codigo, retorno_do_scilab.gsub(/\n/, "<br/>")
-      #        page << "$('retorno_execucao').show()"
-      #        if @program.tem_retorno_numerico? retorno_do_scilab
-      #          page.replace_html :retorno_variaveis, ScilabInterface.extract_values(retorno_do_scilab)
-      #          page << "$('retorno_variaveis').show()"
-      #        end
-      #        if retorno_grafico
-      #          # Usando lightbox:
-      #          page << "$('foto').href = '/images/graficos/#{@user.username}/#{@identificador}.gif';"
-      #          page << "$('foto').onclick();"
-      #          # Mostrando a imagem na propria pagina:
-      #          #  page.replace_html :conteiner, :partial => "grafico_gerado"
-      #          #  page.delay(1) { page.visual_effect :toggle_blind, :div_grafico_gerado }
-      #        end
-      #      end
     else
-      # esta parte nao foi alterada durante a inclusao do recurso automatico de identificacao de retorno. eh um ToDo!
       remote_node = DRbObject.new(nil, "druby://#{node_ready.ip}:9000")
-      @program.adiciona_libs
-      remote_node.codigo = @program.codigo
-      remote_node.tipo_retorno = "grafico"
-      remote_node.grafico = @identificador + ".gif"
-      @job.id_node = node_ready.ip
+      @job.id_node = node_ready.id
       @job.save
-      fork do
-        retorno_do_scilab = remote_node.exec
-        grafico = File.open( "public/images/graficos/#{@identificador}.gif","wb")
+      @program.adiciona_libs
+      spawn do
+        remote_node.codigo = @program.codigo
+        remote_node.retorno_grafico = retorno_grafico
+        remote_node.grafico = @identificador + ".gif"
+        @job.retorno = remote_node.exec
+        @job.grafico = "#{@identificador}.gif"
+        grafico = File.open( "public/images/graficos/#{@user.username}/#{@identificador}.gif","wb")
         grafico.write remote_node.get_image
         grafico.close
         @job.pronto = true;
-        @job.grafico = "#{@identificador}.gif"
         @job.save
       end
     end
@@ -125,6 +107,11 @@ class InterfaceController < ApplicationController
     Program.find(params[:id]).destroy
     flash[:notice] = "O programa foi removido com sucesso."
     redirect_to :action => "index" 
+  end
+  
+  def get_job_status
+    @job = Job.find(params[:job_id])
+    render :partial => "get_job_status", :locals => { :job => @job } 
   end
   
   def destroy_job

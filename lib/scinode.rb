@@ -2,7 +2,7 @@
 require 'drb'
 
 class SciNode
-  attr_accessor :codigo, :tipo_retorno, :grafico, :executando_job
+  attr_accessor :codigo, :retorno_grafico, :grafico, :executando_job
   def initialize
     @executando_job = false
   end
@@ -13,9 +13,9 @@ class SciNode
     comando = ""
     comando << "export DISPLAY=:0\n"
     comando << "scilab -nw << EOF\n"
-    comando << "scf(0);\n" if @tipo_retorno == "grafico"
+    comando << "scf(0);\n" if retorno_grafico
     comando << @codigo.gsub(/\r/, "") + "\n"
-    comando << "xs2gif(0,'#{@grafico}');\n" if @tipo_retorno == "grafico"
+    comando << "xs2gif(0,'#{@grafico}');\n" if retorno_grafico
     comando << "exit;\n"
     comando << "EOF\n"
     @executando_job = true

@@ -1,0 +1,7 @@
+<b>
+  <% if job.pronto? %>
+      <%= link_to job.program.nome, :action => :program_results, :id => job.id  %>
+  <% else %>
+      <%= job.program.nome %>
+  <% end %>          
+</b>
