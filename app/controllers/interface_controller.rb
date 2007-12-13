@@ -39,9 +39,10 @@ class InterfaceController < ApplicationController
   
   def process_program
     @program = Program.find(params[:id])
+    @user = User.find(session[:user_id])
     @program.adiciona_parametros params[:parametros]
     @identificador = @program.nome + rand(1000).to_s
-    nome_arquivo = `pwd`.chomp.gsub(/\/public/, '') << "/public/images/graficos/#{@identificador}.gif"
+    nome_arquivo = `pwd`.chomp.gsub(/\/public/, '') << "/public/images/graficos/#{@user.username}/#{@identificador}.gif"
     retorno_grafico = @program.tem_retorno_grafico?
     node_ready = get_node_ready(Node.find(:all))
     if node_ready.nil?
@@ -55,7 +56,7 @@ class InterfaceController < ApplicationController
         end
         if retorno_grafico
           # Usando lightbox:
-          page << "$('foto').href = '/images/graficos/#{@identificador}.gif';"
+          page << "$('foto').href = '/images/graficos/#{@user.username}/#{@identificador}.gif';"
           page << "$('foto').onclick();"
           # Mostrando a imagem na propria pagina:
           #  page.replace_html :conteiner, :partial => "grafico_gerado"

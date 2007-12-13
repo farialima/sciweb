@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 6
+# Schema version: 7
 #
 # Table name: users
 #
@@ -13,6 +13,7 @@
 #
 
 require 'digest/sha1'
+require 'fileutils'
 
 class User < ActiveRecord::Base
   validates_presence_of :username
@@ -26,6 +27,17 @@ class User < ActiveRecord::Base
   
   has_many :programs
   has_many :libs
+  
+  def after_create
+    path = `pwd`.chomp.gsub(/\/public/, '') << "/public/images/graficos"
+    Dir.mkdir(path) unless File.exist?(path)
+    Dir.mkdir("#{path}/#{self.username}") unless File.exist?("#{path}/#{self.username}")
+  end
+  
+  def after_destroy
+    path = `pwd`.chomp.gsub(/\/public/, '') << "/public/images/graficos"
+    FileUtils.remove_dir("#{path}/#{self.username}") if File.exist?("#{path}/#{self.username}")
+  end
   
   def validate
     errors.add_to_base("Campos de senha não podem estar em branco.") if hashed_password.blank?
@@ -62,5 +74,4 @@ class User < ActiveRecord::Base
   def create_new_salt
     self.salt = self.object_id.to_s + rand.to_s
   end
-  
 end
