@@ -40,28 +40,30 @@ class InterfaceController < ApplicationController
   def process_program
     @program = Program.find(params[:id])
     @program.adiciona_parametros params[:parametros]
-    #render :inline => "<%= debug @program.codigo %>"; return
     @identificador = @program.nome + rand(1000).to_s
     nome_arquivo = `pwd`.chomp.gsub(/\/public/, '') << "/public/images/graficos/#{@identificador}.gif"
+    retorno_grafico = @program.tem_retorno_grafico?
     node_ready = get_node_ready(Node.find(:all))
     if node_ready.nil?
-      retorno_do_scilab = ScilabInterface.new(@program, nome_arquivo).exec
+      retorno_do_scilab = ScilabInterface.new(@program, nome_arquivo, retorno_grafico).exec
       render :update do |page|
         page.replace_html :retorno_execucao_codigo, retorno_do_scilab.gsub(/\n/, "<br/>")
         page << "$('retorno_execucao').show()"
-        if @program.tipo_retorno == "grafico"
+        if @program.tem_retorno_numerico? retorno_do_scilab
+          page.replace_html :retorno_variaveis, ScilabInterface.extract_values(retorno_do_scilab)
+          page << "$('retorno_variaveis').show()"
+        end
+        if retorno_grafico
           # Usando lightbox:
           page << "$('foto').href = '/images/graficos/#{@identificador}.gif';"
           page << "$('foto').onclick();"
           # Mostrando a imagem na propria pagina:
           #  page.replace_html :conteiner, :partial => "grafico_gerado"
           #  page.delay(1) { page.visual_effect :toggle_blind, :div_grafico_gerado }
-        else
-          page.replace_html :retorno_variaveis, ScilabInterface.extract_values(retorno_do_scilab)
-          page << "$('retorno_variaveis').show()"
         end
       end
     else
+      # esta parte nao foi alterada durante a inclusao do recurso automatico de identificacao de retorno. eh um ToDo!
       remote_node = DRbObject.new(nil, "druby://#{node_ready.ip}:9000")
       @program.adiciona_libs
       remote_node.codigo = @program.codigo

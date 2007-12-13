@@ -17,14 +17,7 @@
 
 class Program < ActiveRecord::Base
   
-  TIPOS_RETORNO = [
-    #Exibido  Armazenado
-    ["Gráfico",         "grafico"],
-    ["Numérico",     "numerico"]
-  ]
-  
-  validates_presence_of :nome, :descricao, :codigo, :parametros, :tipo_retorno
-  validates_inclusion_of :tipo_retorno, :in => TIPOS_RETORNO.map { |disp, value| value }
+  validates_presence_of :nome, :descricao, :codigo, :parametros
   
   belongs_to :user
   has_and_belongs_to_many :libs
@@ -59,5 +52,15 @@ class Program < ActiveRecord::Base
       self.libs.each { |i| self.codigo << i.codigo.gsub(/\r/, "") + "\n" }
     end
     self.codigo << codigo_original
+  end
+  
+  def tem_retorno_numerico?(retorno_do_scilab)
+    retorno_do_scilab.split("-->").grep(/^\s*\w+\s+=/).length > 0
+  end
+  
+  def tem_retorno_grafico?
+    resultado_da_busca = false
+    IO.foreach(`pwd`.chomp.gsub(/\public/, "") + "/public/scilab_graphic_functions.txt") { |funcao| if self.codigo.include?(funcao.chomp) then resultado_da_busca = true; break end }
+    resultado_da_busca
   end
 end

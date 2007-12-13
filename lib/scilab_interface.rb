@@ -1,18 +1,17 @@
 class ScilabInterface
-  def initialize(program, grafico)
-    @program = program
-    @grafico = grafico
+  def initialize(program, grafico, tem_retorno_grafico)
+    @program, @grafico, @tem_retorno_grafico = program, grafico, tem_retorno_grafico
   end
   def exec
     comando = ""
     comando << "export DISPLAY=:3\n"
     comando << "scilab -nw << EOF\n"
-    comando << "scf(0);\n" if @program.tipo_retorno == "grafico"
+    comando << "scf(0);\n" if @tem_retorno_grafico
     if @program.libs.count > 0
       @program.libs.each { |i| comando << i.codigo.gsub(/\r/, "") + "\n" }
     end
     comando << @program.codigo.gsub(/\r/, "") + "\n"
-    comando << "xs2gif(0,'#{@grafico}');\n" if @program.tipo_retorno == "grafico"
+    comando << "xs2gif(0,'#{@grafico}');\n" if @tem_retorno_grafico
     comando << "exit;\n"
     comando << "EOF\n"
     `#{comando}`
