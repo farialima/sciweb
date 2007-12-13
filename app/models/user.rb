@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 7
+# Schema version: 8
 #
 # Table name: users
 #
@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   
   has_many :programs
   has_many :libs
+  has_many :jobs
   
   def after_create
     path = `pwd`.chomp.gsub(/\/public/, '') << "/public/images/graficos"

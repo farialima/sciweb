@@ -1,15 +1,16 @@
 # == Schema Information
 # Schema version: 8
 #
-# Table name: programs
+# Table name: jobs
 #
 #  id         :integer         not null, primary key
-#  user_id    :integer         not null
-#  nome       :string(40)      
-#  descricao  :text            
-#  codigo     :text            
+#  user_id    :integer         
+#  program_id :integer         
+#  id_node    :integer         
+#  pronto     :boolean         
+#  grafico    :string(200)     
 #  parametros :text            
-#  publico    :boolean         default(TRUE)
+#  retorno    :text            
 #  created_at :datetime        
 #  updated_at :datetime        
 #

@@ -1,0 +1,14 @@
+<div id="cluster">
+  <div class="title">Meus Jobs</div>
+  <div class="container">
+    <% for job in Job.find_all_by_user_id(session[:user_id]) %>
+      <b>
+        <% if job.pronto? %>
+          <%= link_to job.program.nome, :action => :program_results, :id => job.id  %>
+        <% else %>
+          <%= job.program.nome %>
+        <% end %>          
+      </b>
+    <% end %>
+  </div>
+</div>

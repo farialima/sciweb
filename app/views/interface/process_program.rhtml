@@ -1,0 +1,18 @@
+<div id="home-left">
+  <div class="para">
+    <h3>Job enviado!</h3>
+    <p>
+      Seu Job está sendo executando no 
+      <% if @job.id_node == 0 %>
+        servidor do SciWeb.
+      <% else %>
+        nó <%= Node.find(@job.id_node).ip %>.
+      <% end %>
+    </p>
+  </div>
+</div>
+
+<div id="home-right">
+  <%= render :partial => "sidebar_cluster" %>
+  <%= render :partial => "sidebar_logged" %>
+</div>

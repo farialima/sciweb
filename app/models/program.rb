@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 7
+# Schema version: 8
 #
 # Table name: programs
 #
@@ -19,6 +19,7 @@ class Program < ActiveRecord::Base
   validates_presence_of :nome, :descricao, :codigo, :parametros
   
   belongs_to :user
+  has_many :jobs
   has_and_belongs_to_many :libs
   
   def adiciona_parametros(parametros_adicionais)

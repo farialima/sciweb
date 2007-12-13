@@ -1,0 +1,46 @@
+<div id="home-left">
+  <div id="para">
+    <h3>Resultados da execução do programa <%= h @job.program.nome %></h3>
+    <p>
+    <p>Descrição: <%= h @job.program.descricao %></p>
+    <br/>
+    <% if session[:user_id] == @job.program.user_id %>
+      <p>Opções:
+        <ul>
+          <li><%= link_to "Deletar resultados", { :action => "destroy_job", :id => @job }, :confirm => "Tem certeza?", :method => :post %></li>
+        </ul>
+      </p>
+    <% end %>
+    <div>
+      <div>
+        <%= link_to_function "Ver o código do programa", visual_effect(:toggle_blind, :codigo) %>
+        <div id="codigo" style="display: none;">
+          <div class="codigo"><%= @job.program.codigo.gsub(/\r\n/,"<br/>")  %></div>
+        </div>
+      </div>
+      
+      <div>
+        <%= link_to_function "Ver o retorno de execução do Scilab", visual_effect(:toggle_blind, :retorno_execucao_codigo) %>
+        <div id="retorno_execucao_codigo" style="display: none;">
+          <div class="codigo"><%= @job.retorno.gsub(/\n/,"<br/>")  %></div>
+        </div>
+      </div>
+      
+      <div>
+        <%= link_to_function "Variáveis retornadas", visual_effect(:toggle_blind, :retorno_variaveis) %>
+        <div id="retorno_variaveis" style="display: none;">
+          <div class="codigo"><%= ScilabInterface.extract_values @job.retorno %></div>
+        </div>
+      </div>
+      
+      <div id="grafico">
+        <a id="foto" href="/images/graficos/<%= @job.user.username %>/<%= @job.grafico %>" rel="lightbox" title="Gráfico gerado pelo Scilab">Abrir gráfico gerado</a>  
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="home-right">
+  <%= render :partial => "sidebar_jobs" %>
+  <%= render :partial => "sidebar_logged" %>
+</div>
